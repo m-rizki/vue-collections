@@ -1,11 +1,27 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
-const text = ref('')
+const todoId = ref(1)
+const todoData = ref(null)
+
+async function fetchData() {
+  todoData.value = null
+  const res = await fetch(
+    `https://jsonplaceholder.typicode.com/todos/${todoId.value}`
+  )
+  todoData.value = await res.json()
+}
+
+// first run
+fetchData()
+
+// directly watch a ref and the callback gets fired whenever count's value changes.
+watch(todoId, fetchData)
 </script>
 
 <template>
-  <!--  v-model automatically syncs the <input>'s value with the bound state  -->
-  <input v-model="text" placeholder="Type here">
-  <p>{{ text }}</p>
+  <p>Todo id: {{ todoId }}</p>
+  <button @click="todoId++">Fetch next todo</button>
+  <p v-if="!todoData">Loading...</p>
+  <pre v-else>{{ todoData }}</pre>
 </template>
