@@ -1,27 +1,10 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import ChildComp from './ChildComp.vue'
 
-const todoId = ref(1)
-const todoData = ref(null)
-
-async function fetchData() {
-  todoData.value = null
-  const res = await fetch(
-    `https://jsonplaceholder.typicode.com/todos/${todoId.value}`
-  )
-  todoData.value = await res.json()
-}
-
-// first run
-fetchData()
-
-// directly watch a ref and the callback gets fired whenever count's value changes.
-watch(todoId, fetchData)
+const msg = ref('from parent')
 </script>
 
 <template>
-  <p>Todo id: {{ todoId }}</p>
-  <button @click="todoId++">Fetch next todo</button>
-  <p v-if="!todoData">Loading...</p>
-  <pre v-else>{{ todoData }}</pre>
+  <ChildComp>Message: {{ msg }}</ChildComp>
 </template>

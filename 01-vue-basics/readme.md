@@ -333,3 +333,113 @@ watch(todoId, fetchData)
 ```
 
 Learn More: [Guide - Watcher](https://vuejs.org/guide/essentials/watchers.html)
+
+## Components
+
+```html
+<!-- ChildComp.vue -->
+<template>
+  <h2>A Child Component!</h2>
+</template>
+```
+
+```html
+<!-- App.vue -->
+<script setup>
+import ChildComp from './ChildComp.vue'
+</script>
+
+<template>
+  <!-- render child component -->
+  <ChildComp />
+</template>
+```
+
+## Props
+
+```html
+<script setup>
+const props = defineProps({
+  msg: String
+})
+</script>
+
+<template>
+  <h2>{{ msg || 'No props passed yet' }}</h2>
+</template>
+```
+
+```html
+<script setup>
+import { ref } from 'vue'
+import ChildComp from './ChildComp.vue'
+
+const greeting = ref('Hello from parent')
+</script>
+
+<template>
+  <ChildComp :msg="greeting"/>
+</template>
+```
+
+## Emits
+
+child component can also emit events to the parent
+
+```html
+<script setup>
+const emit = defineEmits(['response'])
+
+emit('response', 'hello from child')
+</script>
+
+<template>
+  <h2>Child component</h2>
+</template>
+```
+
+```html
+<script setup>
+import { ref } from 'vue'
+import ChildComp from './ChildComp.vue'
+
+const childMsg = ref('No child msg yet')
+</script>
+
+<template>
+  <ChildComp @response="(msg) => childMsg = msg" />
+  <p>{{ childMsg }}</p>
+</template>
+```
+
+## Slots
+
+Content inside the `<slot>` outlet will be treated as "fallback" content:
+it will be displayed if the parent did not pass down any slot content:
+
+```html
+<template>
+  <slot>Fallback content</slot>
+</template>
+```
+
+```html
+<script setup>
+import { ref } from 'vue'
+import ChildComp from './ChildComp.vue'
+
+const msg = ref('from parent')
+</script>
+
+<template>
+  <ChildComp>Message: {{ msg }}</ChildComp>
+</template>
+```
+
+## You Did It
+
+Next:
+
+- Set up a real Vue project on your machine by following the [Quick Start](https://vuejs.org/guide/quick-start.html).
+- Go through the [Main Guide](https://vuejs.org/guide/essentials/application.html), which covers all the topics we learned so far in greater details, and much more.
+- Check out some more practical [Examples](https://vuejs.org/examples/#hello-world).
